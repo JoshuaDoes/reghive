@@ -143,7 +143,32 @@ func NewBCDDescType(descType []byte) *BCDDescType {
 }
 
 type RegValueType int64
-
+/* enum hive_type {
+   // Just a key without a value
+   hive_t_REG_NONE = 0,
+   // A Windows string (encoding is unknown, but often UTF16-LE)
+   hive_t_REG_SZ = 1,
+   // A Windows string that contains %env% (environment variable expansion)
+   hive_t_REG_EXPAND_SZ = 2,
+   // A blob of binary
+   hive_t_REG_BINARY = 3,
+   // DWORD (32 bit integer), little endian
+   hive_t_REG_DWORD = 4,
+   // DWORD (32 bit integer), big endian
+   hive_t_REG_DWORD_BIG_ENDIAN = 5,
+   // Symbolic link to another part of the registry tree
+   hive_t_REG_LINK = 6,
+   // Multiple Windows strings.  See http://blogs.msdn.com/oldnewthing/archive/2009/10/08/9904646.aspx
+   hive_t_REG_MULTI_SZ = 7,
+   // Resource list
+   hive_t_REG_RESOURCE_LIST = 8,
+   // Resource descriptor
+   hive_t_REG_FULL_RESOURCE_DESCRIPTOR = 9,
+   // Resouce requirements list
+   hive_t_REG_RESOURCE_REQUIREMENTS_LIST = 10,
+   // QWORD (64 bit integer), unspecified endianness but usually little endian
+   hive_t_REG_QWORD = 11,
+};*/
 const (
 	RegNone RegValueType = iota
 	RegSZ
@@ -154,9 +179,11 @@ const (
 	RegLink
 	RegMultiSZ
 	RegResourceList
-	RegQwordLittle = 0xB
-	RegDevice      = 0xE
-	RegDescType    = 0xF
+	RegFullResourceDescriptor
+	RegResourceRequirementsList
+	RegQword
+	RegDevice   = 0xE
+	RegDescType = 0xF
 )
 
 func (t RegValueType) String() string {
@@ -179,8 +206,12 @@ func (t RegValueType) String() string {
 		return "REG_MULTI_SZ"
 	case RegResourceList:
 		return "REG_RESOURCE_LIST"
-	case RegQwordLittle:
-		return "REG_QWORD_LITTLE"
+	case RegFullResourceDescriptor:
+		return "REG_FULL_RESOURCE_DESCRIPTOR"
+	case RegResourceRequirementsList:
+		return "REG_RESOURCE_REQUIREMENTS_LIST"
+	case RegQword:
+		return "REG_QWORD"
 	case RegDevice:
 		return "REG_BCD_DEVICE"
 	case RegDescType:

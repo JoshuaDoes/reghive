@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"log"
+	"math/rand"
 	"strconv"
 	"strings"
 	"unicode/utf16"
@@ -29,6 +30,14 @@ func GuidFrom(b []byte) string {
 	l[5] = fmt.Sprintf("%04s", strconv.FormatUint(uint64(t6), 16))
 
 	return strings.ToUpper(l[0] + "-" + l[1] + "-" + l[2] + "-" + l[3] + "-" + l[4] + l[5])
+}
+
+func GenerateGuid() (string, error) {
+	guidBuf := make([]byte, 16)
+	if _, err := rand.Read(guidBuf); err != nil {
+			return "", err
+	}
+	return GuidFrom(guidBuf), nil
 }
 
 func DeviceEntryFrom(b []byte) ([]byte, string) {
